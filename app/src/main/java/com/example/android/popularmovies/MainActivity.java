@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movies);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, MoviePreferences.getPreferredGridCols());
         mRecyclerView.setLayoutManager(layoutManager);
@@ -40,8 +41,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMovieData() {
+        showMovieDataView();
         String defaultMovieCategory = MoviePreferences.buildCategorySpecificUrl("POPULAR");
         new FetchMovieTask().execute(defaultMovieCategory);
+    }
+
+    private void showMovieDataView() {
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void showErrorMessage() {
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
@@ -74,7 +86,10 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String[] movieData) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(movieData != null) {
+                showMovieDataView();
                 mMovieAdapter.setMovieData(movieData);
+            } else {
+                showErrorMessage();
             }
         }
     }
