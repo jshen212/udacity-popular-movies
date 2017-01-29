@@ -8,35 +8,53 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.net.IDN;
+import java.net.URI;
 
 public class OpenMovieJsonUtils {
 
     public static String[] getSimpleMovieStringsFromJson(Context context, String movieJsonStr) throws JSONException {
         final String MOVIE_LIST = "results";
-        final String OWM_MESSAGE_CODE = "cod";
+        final String POSTER_PATH= "poster_path";
+        final String ADULT_STATUS = "adult";
+        final String OVERVIEW= "overview";
+        final String RELEASE_DATE = "release_date";
+        final String GENRE_IDS = "genre_ids";
+        final String ID = "id";
+        final String ORIGINAL_TITLE = "original_title";
+        final String ORIGINAL_LANGUAGE = "original_language";
+        final String TITLE = "title";
+        final String BACKDROP_PATH = "backdrop_path";
+        final String POPULARITY = "popularity";
+        final String VOTE_COUNT = "vote_count";
+        final String VIDEO = "video";
+        final String VOTE_AVG = "vote_average";
 
         String [] parsedMovieData = null;
         JSONObject movieJson = new JSONObject(movieJsonStr);
-
-//        if(movieJson.has(MOVIE_LIST)) {
-//            Log.d("movieJson", movieJson.toString());
-//            int errorCode = movieJson.getInt(OWM_MESSAGE_CODE);
-//
-//            switch(errorCode) {
-//                case HttpURLConnection.HTTP_OK:
-//                    break;
-//                case HttpURLConnection.HTTP_NOT_FOUND:
-//                    return null;
-//                default:
-//                    return null;
-//            }
-//        }
-
         JSONArray moviesArray = movieJson.getJSONArray("results");
+
         parsedMovieData = new String[moviesArray.length()];
         for(int i = 0; i < moviesArray.length(); i++) {
             JSONObject movie = moviesArray.getJSONObject(i);
-            parsedMovieData[i] = movie.toString();
+            String poster_path = movie.getString(POSTER_PATH);
+            String adult_status = movie.getString(ADULT_STATUS);
+            String overview = movie.getString(OVERVIEW);
+            String release_date = movie.getString(RELEASE_DATE);
+            String genre_ids = movie.getString(GENRE_IDS);
+            String id = movie.getString(ID);
+            String original_title= movie.getString(ORIGINAL_TITLE);
+            String original_language = movie.getString(ORIGINAL_LANGUAGE);
+            String movie_title = movie.getString(TITLE);
+            String backdrop_path = movie.getString(BACKDROP_PATH);
+            String popularity = movie.getString(POPULARITY);
+            String vote_count = movie.getString(VOTE_COUNT);
+            String video = movie.getString(VIDEO);
+            String vote_avg= movie.getString(VOTE_AVG);
+
+            String result = poster_path + adult_status + overview + release_date + genre_ids + id + original_title + original_language + movie_title + backdrop_path + popularity + vote_count + video + vote_avg;
+            Log.d("poster path", poster_path);
+            parsedMovieData[i] = result;
         }
         return parsedMovieData;
     }
