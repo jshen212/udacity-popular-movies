@@ -1,0 +1,72 @@
+package com.example.android.popularmovies;
+
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.example.android.popularmovies.data.MoviePreferences;
+import com.example.android.popularmovies.utilities.NetworkUtils;
+import com.example.android.popularmovies.utilities.OpenMovieJsonUtils;
+
+import java.net.URL;
+
+public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView mRecyclerView;
+    private MovieAdapter mMovieAdapter;
+    private TextView mErrorMessageDisplay;
+    private ProgressBar mLoadingIndicator;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_movies);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, MoviePreferences.getPreferredGridCols());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mMovieAdapter = new MovieAdapter();
+        mRecyclerView.setAdapter(mMovieAdapter);
+        loadMovieData();
+    }
+
+    private void loadMovieData() {
+        String defaultMovieCategory = MoviePreferences.buildCategorySpecificUrl("POPULAR");
+        new FetchMovieTask().execute(defaultMovieCategory);
+    }
+
+    public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(String... params) {
+            if(params.length == 0) {
+                return null;
+            }
+
+            String preferredMovieCategory = params[0];
+            URL movieRequestUrl = NetworkUtils.buildUrl(preferredMovieCategory);
+            try {
+                String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
+                String[] jsonMovieData = OpenMovieJsonUtils.getSimpleMovieStringsFromJson(MainActivity.this, jsonMovieResponse);
+                return jsonMovieData;
+            } catch(Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String[] movieData) {
+            if(movieData != null) {
+                mMovieAdapter.setMovieData(movieData);
+            }
+        }
+    }
+}
