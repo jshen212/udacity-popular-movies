@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, MoviePreferences.getPreferredGridCols());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         mMovieAdapter = new MovieAdapter();
         mRecyclerView.setAdapter(mMovieAdapter);
@@ -43,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -64,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String[] movieData) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(movieData != null) {
                 mMovieAdapter.setMovieData(movieData);
             }
