@@ -8,6 +8,8 @@ public class MoviePreferences {
     private static final String TOP_RATED = "top_rated";
     private static final String API_KEY = "?api_key=7451504112b084237b695f2c6005e815";
     private static final Integer GRID_COLS = 3;
+    private static final String MOVIE_POSTER_SIZE = "w342/";
+    private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     private static String builtUrl;
 
     public static String getBaseUrl() {
@@ -46,9 +48,17 @@ public class MoviePreferences {
 
     private static Integer getGridCols() { return GRID_COLS; }
 
-    public String getMovies(String category) {
+    public static String getMovies(String category) {
         return buildCategorySpecificUrl(category);
     }
+
+    public static String getPosterSize() { return getPosterDimension(); }
+
+    private static String getPosterDimension() { return MOVIE_POSTER_SIZE; }
+
+    public static String getPosterBaseUrl() { return getImgBaseUrl(); }
+
+    private static String getImgBaseUrl() {return IMAGE_BASE_URL; }
 
     public static String buildCategorySpecificUrl(String category) {
         if(category == "POPULAR") {

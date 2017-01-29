@@ -1,12 +1,16 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private String[] mMovieData;
@@ -15,12 +19,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mMovieTextView;
+//        public final TextView mMovieTextView;
         public final ImageView mMovieImageView;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            mMovieTextView = (TextView) view.findViewById(R.id.movie_view_holder_instance);
+//            mMovieTextView = (TextView) view.findViewById(R.id.movie_view_holder_instance);
             mMovieImageView = (ImageView) view.findViewById(R.id.movie_image);
         }
     }
@@ -39,8 +43,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, int position) {
         String movieForSpecificPosition = mMovieData[position];
-        movieAdapterViewHolder.mMovieTextView.setText(movieForSpecificPosition);
+        Uri uri = Uri.parse(mMovieData[position]);
+        Context context = movieAdapterViewHolder.mMovieImageView.getContext();
+        Picasso.with(context).load(uri).into(movieAdapterViewHolder.mMovieImageView);
+        Log.d("movie data", mMovieData[position]);
+//        movieAdapterViewHolder.r.setText(movieForSpecificPosition);
     }
+
 
     @Override
     public int getItemCount() {

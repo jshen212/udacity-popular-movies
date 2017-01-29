@@ -2,6 +2,10 @@ package com.example.android.popularmovies.utilities;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.example.android.popularmovies.data.MoviePreferences;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,6 +16,7 @@ import java.net.IDN;
 import java.net.URI;
 
 public class OpenMovieJsonUtils {
+    ImageView imageView;
 
     public static String[] getSimpleMovieStringsFromJson(Context context, String movieJsonStr) throws JSONException {
         final String MOVIE_LIST = "results";
@@ -52,9 +57,9 @@ public class OpenMovieJsonUtils {
             String video = movie.getString(VIDEO);
             String vote_avg= movie.getString(VOTE_AVG);
 
-            String result = poster_path + adult_status + overview + release_date + genre_ids + id + original_title + original_language + movie_title + backdrop_path + popularity + vote_count + video + vote_avg;
-            Log.d("poster path", poster_path);
-            parsedMovieData[i] = result;
+//            String result = poster_path + adult_status + overview + release_date + genre_ids + id + original_title + original_language + movie_title + backdrop_path + popularity + vote_count + video + vote_avg;
+//            parsedMovieData[i] = result;
+            parsedMovieData[i] = MoviePreferences.getPosterBaseUrl() + MoviePreferences.getPosterSize() + poster_path;
         }
         return parsedMovieData;
     }
