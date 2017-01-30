@@ -1,5 +1,7 @@
 package com.example.android.popularmovies;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -77,7 +79,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public void onClick(String movieItem) {
-        Log.d("stringy", movieItem);
+        Context context = this;
+        Class destinationClass = DetailActivity.class;
+        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, movieItem);
+        startActivity(intentToStartDetailActivity);
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
