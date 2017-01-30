@@ -8,10 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.example.android.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    private String[] mMovieData;
+    private ArrayList<Movie> mMovieData;
     private final MovieAdapterOnClickHandler mClickHandler;
 
 
@@ -35,9 +39,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            String selectedMovie = mMovieData[adapterPosition];
-            Log.d("SELECTED MOVIE", selectedMovie);
-            mClickHandler.onClick(selectedMovie);
+            Movie selectedMovie = mMovieData.get(adapterPosition);
+            Log.d("SELECTED MOVIE", selectedMovie.toString());
+            mClickHandler.onClick(selectedMovie.toString());
         }
     }
 
@@ -54,21 +58,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, int position) {
-        String movieForSpecificPosition = mMovieData[position];
-        Uri uri = Uri.parse(movieForSpecificPosition);
+        Movie movieForSpecificPosition = mMovieData.get(position);
+        Uri uri = Uri.parse(movieForSpecificPosition.getPoster_path());
         Context context = movieAdapterViewHolder.mMovieImageView.getContext();
         Picasso.with(context).load(uri).into(movieAdapterViewHolder.mMovieImageView);
-        Log.d("movie data", movieForSpecificPosition);
+        Log.d("movie data", movieForSpecificPosition.toString());
     }
 
 
     @Override
     public int getItemCount() {
         if(null == mMovieData) return 0;
-        return mMovieData.length;
+        return mMovieData.size();
     }
 
-    public void setMovieData(String[] movieData) {
+    public void setMovieData(ArrayList<Movie> movieData) {
         mMovieData = movieData;
         notifyDataSetChanged();
     }

@@ -14,10 +14,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.data.MoviePreferences;
+import com.example.android.popularmovies.models.Movie;
 import com.example.android.popularmovies.utilities.NetworkUtils;
 import com.example.android.popularmovies.utilities.OpenMovieJsonUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Log.d("stringy", movieItem);
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
+    public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
         @Override
         protected void onPreExecute() {
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected String[] doInBackground(String... params) {
+        protected ArrayList<Movie> doInBackground(String... params) {
             if(params.length == 0) {
                 return null;
             }
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             URL movieRequestUrl = NetworkUtils.buildUrl(preferredMovieCategory);
             try {
                 String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-                String[] jsonMovieData = OpenMovieJsonUtils.getSimpleMovieStringsFromJson(MainActivity.this, jsonMovieResponse);
+                ArrayList<Movie> jsonMovieData = OpenMovieJsonUtils.getSimpleMovieStringsFromJson(MainActivity.this, jsonMovieResponse);
                 return jsonMovieData;
             } catch(Exception e) {
                 e.printStackTrace();
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected void onPostExecute(String[] movieData) {
+        protected void onPostExecute(ArrayList<Movie> movieData) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(movieData != null) {
                 showMovieDataView();
