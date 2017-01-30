@@ -19,7 +19,7 @@ import com.example.android.popularmovies.utilities.OpenMovieJsonUtils;
 
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        mMovieAdapter = new MovieAdapter();
+        mMovieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
         loadMovieData();
     }
@@ -71,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
     private void showErrorMessage() {
         mRecyclerView.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(String movieItem) {
+        Log.d("stringy", movieItem);
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, String[]> {

@@ -8,24 +8,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private String[] mMovieData;
+    private final MovieAdapterOnClickHandler mClickHandler;
 
-    public MovieAdapter() {
+
+    public interface MovieAdapterOnClickHandler {
+        void onClick(String movieItem);
     }
 
-    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
-//        public final TextView mMovieTextView;
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
+        mClickHandler = clickHandler;
+    }
+
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final ImageView mMovieImageView;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-//            mMovieTextView = (TextView) view.findViewById(R.id.movie_view_holder_instance);
             mMovieImageView = (ImageView) view.findViewById(R.id.movie_image);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            String selectedMovie = mMovieData[adapterPosition];
+            Log.d("SELECTED MOVIE", selectedMovie);
+            mClickHandler.onClick(selectedMovie);
         }
     }
 
@@ -43,11 +55,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, int position) {
         String movieForSpecificPosition = mMovieData[position];
-        Uri uri = Uri.parse(mMovieData[position]);
+        Uri uri = Uri.parse(movieForSpecificPosition);
         Context context = movieAdapterViewHolder.mMovieImageView.getContext();
         Picasso.with(context).load(uri).into(movieAdapterViewHolder.mMovieImageView);
-        Log.d("movie data", mMovieData[position]);
-//        movieAdapterViewHolder.r.setText(movieForSpecificPosition);
+        Log.d("movie data", movieForSpecificPosition);
     }
 
 

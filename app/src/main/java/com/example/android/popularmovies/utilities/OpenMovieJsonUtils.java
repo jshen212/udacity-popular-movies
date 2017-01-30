@@ -16,7 +16,6 @@ import java.net.IDN;
 import java.net.URI;
 
 public class OpenMovieJsonUtils {
-    ImageView imageView;
 
     public static String[] getSimpleMovieStringsFromJson(Context context, String movieJsonStr) throws JSONException {
         final String MOVIE_LIST = "results";
