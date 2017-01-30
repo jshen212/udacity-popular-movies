@@ -62,12 +62,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         int id = item.getItemId();
         // sort by most popular
         if(id == 2131427444) {
-            MovieAdapter.sortMovieData("POPULAR");
+//            MovieAdapter.sortMovieData("POPULAR");
+            loadPopularMovies();
         } else {
-            MovieAdapter.sortMovieData("RATING");
+//            MovieAdapter.sortMovieData("RATING");
+            loadTopRatedMovies();
         }
         mMovieAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadPopularMovies() {
+        showMovieDataView();
+        String movieCategory = MoviePreferences.buildCategorySpecificUrl("POPULAR");
+        new FetchMovieTask().execute(movieCategory);
+        mMovieAdapter.notifyDataSetChanged();
+    }
+
+    private void loadTopRatedMovies() {
+        showMovieDataView();
+        String movieCategory = MoviePreferences.buildCategorySpecificUrl("TOP_RATED");
+        new FetchMovieTask().execute(movieCategory);
+        mMovieAdapter.notifyDataSetChanged();
     }
 
     private void loadMovieData() {

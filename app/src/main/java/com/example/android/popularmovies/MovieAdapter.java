@@ -42,7 +42,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             Movie selectedMovie = mMovieData.get(adapterPosition);
-            mClickHandler.onClick(selectedMovie.toString());
+            mClickHandler.onClick(selectedMovie.getPopularity().toString());
         }
     }
 
@@ -75,32 +75,5 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void setMovieData(ArrayList<Movie> movieData) {
         mMovieData = movieData;
         notifyDataSetChanged();
-    }
-
-    public static void sortMovieData(String sortCategory) {
-        if(sortCategory == "POPULAR") {
-            Collections.sort(mMovieData, new PopularityComparator());
-        } else {
-            Collections.sort(mMovieData, new RatingComparator());
-        }
-    }
-
-    public static class PopularityComparator implements Comparator<Movie> {
-
-        @Override
-        public int compare(Movie m1, Movie m2) {
-            Log.d("compare", String.valueOf(m1.getPopularity().compareTo(m2.getPopularity())));
-            return m1.getPopularity().compareTo(m2.getPopularity());
-        }
-    }
-
-    public static class RatingComparator implements Comparator<Movie> {
-
-        @Override
-        public int compare(Movie m1, Movie m2) {
-            Log.d("m1 vote avg", String.valueOf(m1.getVote_avg()));
-            Log.d("compare", String.valueOf(m1.getVote_avg().compareTo(m2.getVote_avg())));
-            return m1.getVote_avg().compareTo(m2.getVote_avg());
-        }
     }
 }

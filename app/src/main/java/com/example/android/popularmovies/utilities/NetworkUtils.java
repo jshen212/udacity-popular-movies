@@ -16,7 +16,7 @@ public class NetworkUtils {
 
 
     public static URL buildUrl(String movieCategory) {
-        Uri builtUri = Uri.parse(MoviePreferences.buildCategorySpecificUrl("POPULAR"));
+        Uri builtUri = Uri.parse(MoviePreferences.buildCategorySpecificUrl(movieCategory));
 
         URL url = null;
         try {
