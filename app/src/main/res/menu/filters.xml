@@ -7,9 +7,9 @@ tools:context=".MainActivity"
 android:icon="@drawable/ic_action_sort">
     <item
         android:id="@+id/menuSortNewest"
-        android:title="Sort by most popular" />
+        android:title="@string/filter_most_popular" />
 
     <item
         android:id="@+id/menuSortRating"
-        android:title="Sort by highest rated" />
+        android:title="@string/filter_highest_rated" />
 </menu>

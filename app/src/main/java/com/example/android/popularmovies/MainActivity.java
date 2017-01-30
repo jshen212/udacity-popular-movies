@@ -23,7 +23,9 @@ import com.example.android.popularmovies.utilities.OpenMovieJsonUtils;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+import static com.example.android.popularmovies.MovieAdapter.*;
+
+public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler {
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
@@ -58,6 +60,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        // sort by most popular
+        if(id == 2131427444) {
+            MovieAdapter.sortMovieData("POPULAR");
+        } else {
+            MovieAdapter.sortMovieData("RATING");
+        }
+        mMovieAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
 

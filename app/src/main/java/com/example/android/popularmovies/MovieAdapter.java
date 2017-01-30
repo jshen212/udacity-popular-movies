@@ -13,9 +13,11 @@ import com.example.android.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    private ArrayList<Movie> mMovieData;
+    private static ArrayList<Movie> mMovieData;
     private final MovieAdapterOnClickHandler mClickHandler;
 
 
@@ -40,7 +42,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             Movie selectedMovie = mMovieData.get(adapterPosition);
-            Log.d("SELECTED MOVIE", selectedMovie.toString());
             mClickHandler.onClick(selectedMovie.toString());
         }
     }
@@ -62,7 +63,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         Uri uri = Uri.parse(movieForSpecificPosition.getPoster_path());
         Context context = movieAdapterViewHolder.mMovieImageView.getContext();
         Picasso.with(context).load(uri).into(movieAdapterViewHolder.mMovieImageView);
-        Log.d("movie data", movieForSpecificPosition.toString());
     }
 
 
@@ -75,5 +75,32 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void setMovieData(ArrayList<Movie> movieData) {
         mMovieData = movieData;
         notifyDataSetChanged();
+    }
+
+    public static void sortMovieData(String sortCategory) {
+        if(sortCategory == "POPULAR") {
+            Collections.sort(mMovieData, new PopularityComparator());
+        } else {
+            Collections.sort(mMovieData, new RatingComparator());
+        }
+    }
+
+    public static class PopularityComparator implements Comparator<Movie> {
+
+        @Override
+        public int compare(Movie m1, Movie m2) {
+            Log.d("compare", String.valueOf(m1.getPopularity().compareTo(m2.getPopularity())));
+            return m1.getPopularity().compareTo(m2.getPopularity());
+        }
+    }
+
+    public static class RatingComparator implements Comparator<Movie> {
+
+        @Override
+        public int compare(Movie m1, Movie m2) {
+            Log.d("m1 vote avg", String.valueOf(m1.getVote_avg()));
+            Log.d("compare", String.valueOf(m1.getVote_avg().compareTo(m2.getVote_avg())));
+            return m1.getVote_avg().compareTo(m2.getVote_avg());
+        }
     }
 }
