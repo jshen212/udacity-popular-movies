@@ -60,12 +60,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // sort by most popular
-        if(id == 2131427444) {
-//            MovieAdapter.sortMovieData("POPULAR");
+        if(id == 2131427448) {
             loadPopularMovies();
         } else {
-//            MovieAdapter.sortMovieData("RATING");
             loadTopRatedMovies();
         }
         mMovieAdapter.notifyDataSetChanged();
