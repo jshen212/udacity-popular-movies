@@ -6,7 +6,6 @@ public class MoviePreferences {
     private static final String BASE_URL = "http://api.themoviedb.org/3/movie/";
     private static final String POPULAR = "popular";
     private static final String TOP_RATED = "top_rated";
-    private static final String API_KEY = "?api_key=7451504112b084237b695f2c6005e815";
     private static final Integer GRID_COLS = 3;
     private static final String MOVIE_POSTER_SIZE = "w342/";
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
