@@ -1,10 +1,12 @@
 package com.example.android.popularmovies.models;
 
+import java.io.Serializable;
+
 /**
  * Created by jeffs1 on 1/29/17.
  */
 
-public class Movie {
+public class Movie implements Serializable {
     String poster_path;
     String adult_status;
     String overview;

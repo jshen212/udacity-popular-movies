@@ -20,6 +20,7 @@ import com.example.android.popularmovies.models.Movie;
 import com.example.android.popularmovies.utilities.NetworkUtils;
 import com.example.android.popularmovies.utilities.OpenMovieJsonUtils;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         mMovieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
-        loadMovieData();
+        loadPopularMovies();
     }
 
     @Override
@@ -83,12 +84,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         mMovieAdapter.notifyDataSetChanged();
     }
 
-    private void loadMovieData() {
-        showMovieDataView();
-        String defaultMovieCategory = MoviePreferences.buildCategorySpecificUrl("POPULAR");
-        new FetchMovieTask().execute(defaultMovieCategory);
-    }
-
     private void showMovieDataView() {
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -100,11 +95,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
     @Override
-    public void onClick(String movieItem) {
+    public void onClick(Movie movieItem) {
         Context context = this;
         Class destinationClass = DetailActivity.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, movieItem);
+        Log.d("movie item", movieItem.toString());
+        intentToStartDetailActivity.putExtra("movieObject", movieItem);
         startActivity(intentToStartDetailActivity);
     }
 

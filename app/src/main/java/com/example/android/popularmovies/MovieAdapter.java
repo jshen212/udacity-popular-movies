@@ -22,7 +22,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
 
     public interface MovieAdapterOnClickHandler {
-        void onClick(String movieItem);
+        void onClick(Movie movieItem);
     }
 
     public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
@@ -42,7 +42,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             Movie selectedMovie = mMovieData.get(adapterPosition);
-            mClickHandler.onClick(selectedMovie.getPopularity().toString());
+            mClickHandler.onClick(selectedMovie);
         }
     }
 
